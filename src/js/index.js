@@ -3,6 +3,11 @@ const $form = document.querySelector('#espresso-menu-form');
 const $input = document.querySelector('#espresso-menu-name');
 const $menuList = document.querySelector('#espresso-menu-list');
 
+const updateMenuCount = () => {
+  const $menuCount = document.querySelector('.menu-count');
+  $menuCount.innerText = `${$menuList.querySelectorAll('li').length} 개`;
+};
+
 const addMenuName = () => {
   const menuName = $input.value;
   const template = menuName => {
@@ -27,6 +32,8 @@ const addMenuName = () => {
 
   $menuList.insertAdjacentHTML('beforeend', template(menuName));
   $input.value = '';
+
+  updateMenuCount();
 };
 
 const updateMenuName = e => {
@@ -42,6 +49,7 @@ const removeMenuName = e => {
   if (confirm('정말 삭제하시겠습니까?')) {
     e.target.closest('li').remove();
   }
+  updateMenuCount();
 };
 
 $form.addEventListener('submit', e => {
