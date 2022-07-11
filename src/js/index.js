@@ -1,6 +1,7 @@
+//* 변수 앞에 $를 표시한 이유는 DOM을 사용했다라는 의미
 const $form = document.querySelector('#espresso-menu-form');
 const $input = document.querySelector('#espresso-menu-name');
-const menuList = document.querySelector('#espresso-menu-list');
+const $menuList = document.querySelector('#espresso-menu-list');
 
 const addMenuName = () => {
   const menuName = $input.value;
@@ -24,8 +25,23 @@ const addMenuName = () => {
     `;
   };
 
-  menuList.insertAdjacentHTML('beforeend', template(menuName));
+  $menuList.insertAdjacentHTML('beforeend', template(menuName));
   $input.value = '';
+};
+
+const updateMenuName = e => {
+  const $menuName = e.target.closest('li').querySelector('.menu-name');
+  const updatedMenuName = prompt('메뉴명을 수정하세요.', $menuName.innerText);
+
+  if (updatedMenuName === null) return;
+
+  $menuName.innerText = updatedMenuName;
+};
+
+const removeMenuName = e => {
+  if (confirm('정말 삭제하시겠습니까?')) {
+    e.target.closest('li').remove();
+  }
 };
 
 $form.addEventListener('submit', e => {
@@ -36,4 +52,16 @@ $form.addEventListener('submit', e => {
     return;
   }
   addMenuName();
+});
+
+$menuList.addEventListener('click', e => {
+  if (e.target.classList.contains('menu-edit-button')) {
+    updateMenuName(e);
+    return;
+  }
+
+  if (e.target.classList.contains('menu-remove-button')) {
+    removeMenuName(e);
+    return;
+  }
 });
